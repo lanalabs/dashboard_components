@@ -3,6 +3,7 @@ import plotly.graph_objects as go
 import dash_core_components as dcc
 import dash_html_components as html
 import dash_bootstrap_components as dbc
+from functools import lru_cache
 
 
 remove_bar_config = {
@@ -21,6 +22,7 @@ def get_indicator_graph(value, mode="number", title=None, height=250):
     return temp_fig
 
 
+@lru_cache(maxsize=5)
 def indicator_div(value, mode="number", height=250, title=None,
                   width=3, id="indicator_graph"):
     fig = get_indicator_graph(value, mode, title=title, height=height)
@@ -31,6 +33,7 @@ def indicator_div(value, mode="number", height=250, title=None,
     )], id=id, n_clicks=0)
 
 
+@lru_cache(maxsize=5)
 def indicator_col(value, mode="number", height=250, title=None,
                   width=3, id="indicator_graph"):
     div = indicator_div(value, mode, height, title, width, id=id)

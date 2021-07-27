@@ -36,3 +36,6 @@ def aggregate(api_key, trace_filter_sequence, **kwargs):
     api = create_connection(api_key)
     df = api.aggregate(trace_filter_sequence=trace_filter_sequence, **kwargs)
     return df
+
+def variant_id_list_to_tfs(variant_ids: list) -> list:
+    return [{"type": "variantFilter", "variantIds": variant_ids}]

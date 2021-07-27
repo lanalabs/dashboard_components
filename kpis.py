@@ -86,3 +86,20 @@ def cases_per_weekday(log_id, api_key, tfs=[]) -> pd.DataFrame:
     df_comb = df_comb.sort_values("ordering_column").drop(columns=["ordering_column"])
 
     return df_comb
+
+def activity_per_timeUnit(api_key, log_id, tfs, activities: list, frequency) -> pd.DataFrame:
+    if frequency not in ["byYear", "byMonth", "byQuarter", "byDayOfWeek", "byDayOfYear", "byHourOfDay"]:
+        raise Exception("Frequency Parameter not valid. Needs to be in: \
+                    [ byYear, byMonth, byQuarter, byDayOfWeek, byDayOfYear, byHourOfDay ]")
+
+    df = aggregate(api_key=api_key,
+                   log_id=log_id,
+                   trace_filter_sequence=tfs,
+                   metric="frequency",
+                   grouping="byMonth",
+                   date_type="startDate",
+                   secondary_grouping="byActivity",
+                   secondary_activities=activities,
+                   values_from="allEvents"
+                   )
+    return df

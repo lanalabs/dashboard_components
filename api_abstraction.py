@@ -2,13 +2,6 @@ import pylana
 import json
 from app import config
 
-def aggregate(api_key, trace_filter_sequence, **kwargs):
-    trace_filter_sequence = json.loads(trace_filter_sequence) if trace_filter_sequence else []
-
-    api = create_connection(api_key)
-    df = api.aggregate(trace_filter_sequence=trace_filter_sequence, **kwargs)
-    return df
-
 def create_connection(auth_token, port=None):
     scheme = config["scheme"]
     host = config["host"]
@@ -29,3 +22,13 @@ def create_connection(auth_token, port=None):
             "token": auth_token
         })
         return api
+
+def aggregate(auth_token, trace_filter_sequence, **kwargs):
+    trace_filter_sequence = json.loads(trace_filter_sequence) if trace_filter_sequence else []
+
+    api = create_connection(auth_token)
+    df = api.aggregate(trace_filter_sequence=trace_filter_sequence, **kwargs)
+    return df
+
+def variant_id_list_to_tfs(variant_ids: list) -> list:
+    return [{"type": "variantFilter", "variantIds": variant_ids}]
